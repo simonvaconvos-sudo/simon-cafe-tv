@@ -30,3 +30,9 @@ V3: Eliminada la taza decorativa central. Cuando falta una fotografía, el área
 
 ## Versión 4 — fotografías 16:9
 Las imágenes de RESTOLIA se muestran en un marco horizontal 16:9 con `object-fit: cover` y centrado automático, sin deformarlas. Puede recortar los bordes de imágenes verticales o cuadradas. Si falta una fotografía, se muestra un espacio limpio sin taza.
+
+## Versión 5 — Fotografías completas
+El contenedor conserva proporción 16:9 y es transparente. Las imágenes se escalan con `object-fit: contain`, sin recortarse ni deformarse; el fondo de granos de café se ve en los espacios libres. No se altera RESTOLIA.
+
+
+V6: Fondo fotográfico de granos de café, con capa oscura para mantener legibles los textos. Conserva conexión RESTOLIA y encuadre contain.
