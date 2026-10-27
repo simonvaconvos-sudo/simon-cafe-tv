@@ -1,0 +1,7 @@
+{
+  "products": [
+    {"id":1,"category":"COMBO","name":"Café latte + 2 medialunas","price":5000,"image":""},
+    {"id":2,"category":"COMBO","name":"Tostado + jugo de naranja","price":6000,"image":""},
+    {"id":3,"category":"COMBO","name":"Latte + 2 chipá","price":3000,"image":""}
+  ]
+}
