@@ -27,3 +27,6 @@ Este proyecto usa una URL pública no documentada como API oficial; RESTOLIA pod
 
 
 V3: Eliminada la taza decorativa central. Cuando falta una fotografía, el área visual queda limpia; se mantiene el logo original.
+
+## Versión 4 — fotografías 16:9
+Las imágenes de RESTOLIA se muestran en un marco horizontal 16:9 con `object-fit: cover` y centrado automático, sin deformarlas. Puede recortar los bordes de imágenes verticales o cuadradas. Si falta una fotografía, se muestra un espacio limpio sin taza.
