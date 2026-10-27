@@ -24,3 +24,6 @@ Opcionalmente se puede definir `RESTOLIA_FEED_URL` en Render para cambiar el ori
 Abrí `https://TU-SITIO.onrender.com/api/promos` para ver el JSON de promociones filtradas. Si hay error 502, revisar logs de Render y la disponibilidad del menú público.
 
 Este proyecto usa una URL pública no documentada como API oficial; RESTOLIA podría modificarla en el futuro.
+
+
+V3: Eliminada la taza decorativa central. Cuando falta una fotografía, el área visual queda limpia; se mantiene el logo original.
