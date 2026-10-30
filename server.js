@@ -1,6 +1,7 @@
 const http=require('http'),fs=require('fs'),path=require('path');
 const root=__dirname, port=process.env.PORT||3000;
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'application/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};
+let weatherCache=null;
 const RESTOLIA_URL='https://vertex.lambdaclass.com/api/v1/public/venues/sim-n-ram-n-andr-s-main/menu';
 function normalizeProducts(input){
  const list=input?.data?.products ?? input?.products ?? input?.items ?? [];
@@ -10,6 +11,19 @@ function normalizeProducts(input){
 }
 http.createServer(async(req,res)=>{
  const url=new URL(req.url,'http://localhost');
+ if(url.pathname==='/api/weather'){
+  res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');
+  if(weatherCache && Date.now()-weatherCache.at<15*60*1000)return res.end(JSON.stringify(weatherCache.data));
+  try{
+   const api='https://api.open-meteo.com/v1/forecast?latitude=-32.8895&longitude=-68.8458&current=temperature_2m&timezone=America%2FArgentina%2FMendoza';
+   const response=await fetch(api,{signal:AbortSignal.timeout(9000)});
+   if(!response.ok)throw Error('Weather HTTP '+response.status);
+   const json=await response.json();const temperature=Number(json?.current?.temperature_2m);
+   if(!Number.isFinite(temperature))throw Error('Temperatura no disponible');
+   const data={temperature,observedAt:json.current.time,city:'Mendoza'};
+   weatherCache={at:Date.now(),data};return res.end(JSON.stringify(data));
+  }catch(err){if(weatherCache)return res.end(JSON.stringify(weatherCache.data));res.statusCode=503;return res.end(JSON.stringify({error:'Temperatura no disponible'}));}
+ }
  if(url.pathname==='/api/promos'){
   res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');
   try{

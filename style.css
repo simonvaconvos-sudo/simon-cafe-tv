@@ -16,3 +16,15 @@
 
 /* Simón Café TV: tipografía unificada estilo Cooper Black. */
 :root, body, button, input, select, textarea, .placeholder, h1, .price { font-family: 'Caprasimo', Georgia, serif !important; }
+
+/* V9: encabezado y animación cinematográfica. */
+header{display:grid;grid-template-columns:1fr 1.4fr 1fr;align-items:start;gap:1vw}
+header img{justify-self:start}
+.eyebrow{justify-self:center;align-self:start;margin-top:3vh;text-align:center;font-family:'Caprasimo',Georgia,serif;font-size:clamp(22px,3.1vw,62px);letter-spacing:.04em;color:#fff0da;text-shadow:0 4px 12px #000b;white-space:nowrap}
+.tv-info{justify-self:end;align-self:start;text-align:right;margin-top:2vh;font-family:'Caprasimo',Georgia,serif;text-shadow:0 3px 10px #000c}
+.clock{font-size:clamp(20px,2.4vw,48px);color:#fff0da;font-variant-numeric:tabular-nums}
+.weather{font-size:clamp(13px,1.35vw,28px);color:#efb6a0;margin-top:.3vh}
+h1{opacity:0;transform:scale(.94) translateY(12px);filter:blur(5px)}
+h1.cinematic{animation:cinematic-name 1.2s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes cinematic-name{0%{opacity:0;transform:scale(.94) translateY(12px);filter:blur(5px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)}}
+@media(max-aspect-ratio:1/1){header{left:3vw;right:3vw;top:2vh;grid-template-columns:1fr 1.5fr 1fr}.eyebrow{font-size:clamp(14px,3.6vw,30px);margin-top:2vh}.tv-info{margin-top:1vh}.clock{font-size:clamp(13px,3vw,24px)}.weather{font-size:clamp(9px,2vw,16px)}}
