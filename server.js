@@ -22,7 +22,7 @@ http.createServer(async(req,res)=>{
    if(!Number.isFinite(temperature))throw Error('Temperatura no disponible');
    const data={temperature,observedAt:json.current.time,city:'Mendoza'};
    weatherCache={at:Date.now(),data};return res.end(JSON.stringify(data));
-  }catch(err){if(weatherCache)return res.end(JSON.stringify(weatherCache.data));res.statusCode=503;return res.end(JSON.stringify({error:'Temperatura no disponible'}));}
+  }catch(err){console.error('Error consultando temperatura de Mendoza:',err);if(weatherCache)return res.end(JSON.stringify(weatherCache.data));res.statusCode=503;return res.end(JSON.stringify({error:'Temperatura no disponible',details:err.message}));}
  }
  if(url.pathname==='/api/promos'){
   res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');

@@ -17,7 +17,30 @@ async function show(p){
  el('progressbar').style.transition='none';el('progressbar').style.width='0';void el('progressbar').offsetWidth;el('progressbar').style.transition='width 5s linear';el('progressbar').style.width='100%';await wait(5000);
 }
 function updateClock(){el('clock').textContent=new Intl.DateTimeFormat('es-AR',{timeZone:'America/Argentina/Mendoza',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());}
-async function updateWeather(){try{const r=await fetch('/api/weather',{cache:'no-store'});if(!r.ok)throw Error('weather');const data=await r.json();if(Number.isFinite(data.temperature))el('weather').textContent='Mendoza · '+Math.round(data.temperature)+'°C';}catch(e){/* Mantener la última temperatura válida. */}}
-updateClock();setInterval(updateClock,10000);updateWeather();setInterval(updateWeather,15*60*1000);
+const WEATHER_DIRECT='https://api.open-meteo.com/v1/forecast?latitude=-32.8895&longitude=-68.8458&current=temperature_2m&timezone=America%2FArgentina%2FMendoza';
+let lastWeatherSuccess=0;
+async function updateWeather(){
+ const target=el('weather');
+ for(const endpoint of ['/api/weather',WEATHER_DIRECT]){
+  try{
+   const controller=new AbortController();
+   const timeout=setTimeout(()=>controller.abort(),8000);
+   let response;
+   try{response=await fetch(endpoint,{cache:'no-store',signal:controller.signal});}
+   finally{clearTimeout(timeout);}
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const data=await response.json();
+   const value=endpoint==='/api/weather'?data.temperature:data?.current?.temperature_2m;
+   if(value===null||value===undefined||!Number.isFinite(Number(value)))throw Error('Temperatura inválida');
+   target.textContent='Mendoza · '+Math.round(Number(value))+'°C';
+   lastWeatherSuccess=Date.now();
+   return;
+  }catch(error){console.warn('Temperatura: error en '+endpoint,error);}
+ }
+ if(!lastWeatherSuccess)target.textContent='Mendoza · --°C';
+}
+updateClock();setInterval(updateClock,10000);
+updateWeather();setInterval(()=>updateWeather(),5*60*1000);
+window.addEventListener('online',updateWeather);
 async function run(){if(playing)return;playing=true;await load();setInterval(load,300000);while(true){if(!products.length){await wait(4000);continue}const p=products[current];if(p)await show(p);current=(current+1)%products.length;await wait(350)}}
 run();
